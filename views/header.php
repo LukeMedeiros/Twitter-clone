@@ -12,7 +12,7 @@
   </head>
   <body>
   
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
 	  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	  </button>
@@ -29,10 +29,10 @@
 			<a class="nav-link" href="?page=publicprofiles">Public Profiles</a>
 		  </li>
 		</ul>
-		<div class="form-inline pull-xs-right">
+		<div class="pull-right">
 		
 			<?php if($_SESSION['id']){ ?>
-				<button class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Logout</button>
+				<a class="btn btn-outline-success" href="?function=logout">Logout</a>
 			<?php } else{ ?>
 				<button class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Login/Sign-up</button>
 			<?php } ?>

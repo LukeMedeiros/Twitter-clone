@@ -1,3 +1,32 @@
+
+#loginAlert{
+	
+	display:none;
+	
+}
+
+.myContainer{
+	
+	margin:20px;
+	
+}
+
+.time{
+	
+	color:blue;
+	
+}
+
+.tweet{
+	
+	border: 1px solid blue;
+	border-radius: 5px; 
+	padding:5px; 
+	margin:5px; 
+	
+}
+
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -18,8 +47,3 @@ body {
   background-color: #f5f5f5;
 }
 
-#loginAlert{
-	
-	display:none;
-	
-}
