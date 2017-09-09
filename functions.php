@@ -31,10 +31,11 @@
 		
 		if($_SESSION['id']>0){
 			
-			echo '<div>
+			echo '
+			<div>
 			  <div class="form-group" >
 				<textarea class="form-control" id="tweetContent" rows="3" style="margin-bottom:20px;"></textarea>
-				<button class="btn btn-primary" >Post Tweets</button>
+				<button class="btn btn-primary" id="postTweetButton" >Post Tweets</button>
 			  </div>
 			</div>'; 
 			
@@ -71,6 +72,13 @@
 			
 			if ($whereClause == "") $query = "";
 			else $query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
+		
+		}else if ($type = 'yourtweets'){
+			
+			$whereClause = "WHERE `userid` = ".mysqli_real_escape_string($link, $_SESSION['id']);
+			
+			$query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
+			
 		}
 		
 		$result = mysqli_query($link, $query); 
@@ -114,7 +122,7 @@
 			array(60 * 60 * 24 , 'day'),
 			array(60 * 60 , 'hour'),
 			array(60 , 'min'),
-			array(1 , 's')
+			array(1 , 'sec')
 		);
 
 		for ($i = 0, $j = count($chunks); $i < $j; $i++) {

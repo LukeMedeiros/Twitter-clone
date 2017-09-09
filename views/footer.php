@@ -126,6 +126,30 @@
 			});
 			
 		});
+		
+		$('#postTweetButton').click(function(){
+			
+			$.ajax({
+			
+				type: "POST",
+				url: "actions.php?action=postTweet",
+				data: "tweetContent=" + $("#tweetContent").val(),
+				success: function(result){
+					
+					if(result == "1"){
+						
+						alert("your tweets was successfully posted");  
+						
+					} else if(result != ""){
+						
+						alert(result); 
+					}
+				
+				}
+			
+			});
+			
+		});
 	
 	</script>
   
