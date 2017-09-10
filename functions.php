@@ -18,12 +18,13 @@
 	
 	function displaySearch(){
 		
-		echo '<div class="form-inline">
+		echo '<form class="form-inline">
 			  <div class="form-group" >
-				<input type="text" style="margin-bottom:20px;" class="form-control" id="formGroupExampleInput" placeholder="Search">
+				<input type="hidden" name="page" value="search">
+				<input type="text" name="q" style="margin-bottom:20px;" class="form-control" id="formGroupExampleInput" placeholder="Search">
 			  </div>
 			  <button class="btn btn-primary" >Search Tweets</button>
-			</div>'; 
+			</form>'; 
 		
 	}
 	
@@ -73,13 +74,34 @@
 			if ($whereClause == "") $query = "";
 			else $query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
 		
-		}else if ($type = 'yourtweets'){
+		}else if ($type == 'yourtweets'){
 			
 			$whereClause = "WHERE `userid` = ".mysqli_real_escape_string($link, $_SESSION['id']);
 			
 			$query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
 			
+		}else if ($type == 'search'){
+			
+			echo "<p>Showing search results for '".mysqli_real_escape_string($link, $_GET['q'])."':</p>"; 
+			
+			$whereClause = "WHERE `tweet` LIKE '%".mysqli_real_escape_string($link, $_GET['q'])."%'";
+			
+			$query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
+			
+		}else if(is_numeric($type)){
+			
+			$userQuery = "SELECT * FROM `users` WHERE `id` =".mysqli_escape_string($link, $type)." LIMIT 1";
+			$userResult = mysqli_query($link, $userQuery); 
+			$user = mysqli_fetch_assoc($userResult);
+			
+			echo"<h2>".mysqli_real_escape_string($link, $user['email'])."'s Tweets </h2>";
+			
+			$whereClause = "WHERE `userid` = ".mysqli_real_escape_string($link, $type);
+			
+			$query = "SELECT * FROM `tweets` ".$whereClause." ORDER BY `datetime` DESC LIMIT 10";
+			
 		}
+		 
 		
 		$result = mysqli_query($link, $query); 
 		
@@ -95,7 +117,7 @@
 				$userResult = mysqli_query($link, $userQuery); 
 				$user = mysqli_fetch_assoc($userResult);
 				
-				echo "<div class='tweet'> <p>".$user['email']." <span class='time'>".time_since(time()-strtotime($row['datetime']))." ago</span>:</p>"; 
+				echo "<div class='tweet'> <p><a href='?page=publicprofiles&userid=".$user['id']."'>".$user['email']."</a> <span class='time'>".time_since(time()-strtotime($row['datetime']))." ago</span>:</p>"; 
 				echo "<p>".$row['tweet']."</p>"; 
 				echo "<a href='' class='toggleFollow' data-userId=".$row['userid']." >";
 
@@ -135,6 +157,22 @@
 
 		$print = ($count == 1) ? '1 '.$name : "$count {$name}s";
 		return $print;
+	}
+
+	function displayUsers(){
+		
+		global $link; 
+		
+		$query = "SELECT * FROM `users` LIMIT 10"; 
+		
+		$result = mysqli_query($link, $query); 
+		
+		while ($row = mysqli_fetch_assoc($result)){
+			
+			echo "<p><a href='?page=publicprofiles&userid=".$row['id']."'>".$row['email']."</a></p>";
+			
+		}
+		
 	}
 	
 ?>
